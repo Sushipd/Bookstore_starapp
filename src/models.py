@@ -64,11 +64,11 @@ class Models:
     # def getBooksAndAssignments(self):
     #     return self.executeRawSql("SELECT book.isbn, email, title, author FROM book LEFT JOIN assignment ON book.isbn = assignment.isbn;").mappings().all()
 
-    # def getProfessorByEmail(self, email):
-    #     values = self.executeRawSql("""SELECT * FROM professor WHERE email=:email;""", {"email": email}).mappings().all()
-    #     if len(values) == 0:
-    #         raise Exception("Professor {} does not exist".format(email))
-    #     return values[0]
+    def getManagerByEmail(self, email):
+        values = self.executeRawSql("""SELECT * FROM manager WHERE email=:email;""", {"email": email}).mappings().all()
+        if len(values) == 0:
+            raise Exception("Manager {} does not exist".format(email))
+        return values[0]
 
     # def getStudentByEmail(self, email):
     #     values = self.executeRawSql("""SELECT * FROM student WHERE email=:email;""", {"email": email}).mappings().all()
@@ -91,7 +91,8 @@ class Models:
             Writer VARCHAR(50) not null,
             Publication_date DATE not null,
             Type VARCHAR(31) not null,
-            Book_name VARCHAR(200) unique not null
+            Book_name VARCHAR(200) unique not null,
+            Price DECIMAL(5,2) not null
             );
         """)
 
@@ -125,6 +126,7 @@ class Models:
                 first_name VARCHAR(50) NOT NULL,
                 last_name VARCHAR(50) NOT NULL,
                 gender VARCHAR(50) NOT NULL,
+                date_of_birth DATE NOT NULL,
                 city VARCHAR(50) NOT NULL,
                 street_address VARCHAR(50) NOT NULL,
                 phone VARCHAR(50) NOT NULL
@@ -133,20 +135,20 @@ class Models:
 
         self.executeRawSql(
             """CREATE TABLE IF NOT EXISTS promotions (
-                promotion_key VARCHAR(50) PRIMARY KEY,
-                price_reduction_type INT,
+                promotion_key VARCHAR(20) PRIMARY KEY,
+                promotion_name VARCHAR(20) NOT NULL,
+                price_reduction_type NUMERIC(4,2) NOT NULL,
                 promotion_media_type VARCHAR(16),
-                promotion_cost INT,
-                promotion_begin_date DATE,
-                promotion_end_date DATE
+                promotion_cost INT NOT NULL,
+                promotion_begin_date DATE NOT NULL,
+                promotion_end_date DATE NOT NULL
                 );
             """)
 
         self.executeRawSql(
             """CREATE TABLE IF NOT EXISTS stores (
-                store_key VARCHAR(50) PRIMARY KEY,
+                store_key VARCHAR(30) PRIMARY KEY,
                 store_name VARCHAR(50),
-                store_number INT,
                 store_street_address VARCHAR(50),
                 store_city VARCHAR(50),
                 store_country VARCHAR(50),
@@ -161,14 +163,10 @@ class Models:
                 POS_transfer_id VARCHAR(50) primary key,
                 date_key VARCHAR(50) references date(date_key),
                 book_key VARCHAR(21) references book(book_key),
-                clerk_key VARCHAR(50) references clerk(clerk_id),
+                clerk_id VARCHAR(50) references clerk(clerk_id),
                 shopper_id VARCHAR(50) references freq_shopper(shopper_id),
                 promotion_key VARCHAR(50) references promotions(promotion_key),
-                stores_key VARCHAR(50) references stores(store_key),
-                price DECIMAL(5,2),
-                sales_quantity INT,
-                cost DECIMAL(4,2),
-                profit DECIMAL(5,2)
+                store_key VARCHAR(50) references stores(store_key)
                 );
             """)
 # data = ( { "id": 1, "title": "The Hobbit", "primary_author": "Tolkien" },
