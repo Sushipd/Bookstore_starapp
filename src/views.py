@@ -121,7 +121,7 @@ def add_freqshopper():
         if session['user_available']:
             reader = AddFreqShopperForm(request.form)
             if request.method == 'POST':
-                models.addFreqShopper({"shopper_id": reader.shopper_id.data, "title": reader.title.data, "first_name": reader.first_name.data, "last_name": reader.last_name.data, "gender": reader.gender.data, "date_of_birth": reader.date_of_birth.data, "city": reader.city.data, "street_address": reader.Weekday.data, "phone": reader.phone.data})
+                models.addFreqShopper({"shopper_id": reader.shopper_id.data, "title": reader.title.data, "first_name": reader.first_name.data, "last_name": reader.last_name.data, "gender": reader.gender.data, "date_of_birth": reader.date_of_birth.data, "city": reader.city.data, "street_address": reader.street_address.data, "phone": reader.phone.data})
                 #return redirect(url_for('show_books'))
             return render_template('addFreqshopper.html', reader=reader)
     except Exception as e:
