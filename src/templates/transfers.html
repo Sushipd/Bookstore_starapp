@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Promotions</title>
+    <title>Transfers</title>
 
     <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
@@ -14,7 +14,6 @@
 
     <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
     <style type="text/css">
-      h1 {text-align: center;}
       #us{
         float: right;
         margin-right: 20px;
@@ -50,20 +49,19 @@
 </div>
 <div>
 <ul class="nav nav-tabs">
-  <li role="presentation"><a href="/transfers">Transfers</a></li>
-  <li role="presentation" class="active"><a href="">Promotions</a></li>
-  <!-- <li role="presentation"><a href="/transfers">Transfers</a></li> -->
-  <li role="presentation"><a href="/addBook">Add Books</a></li>
-  <li role="presentation"><a href="/addClerk">Add Clerks</a></li>
-  <!-- <li role="presentation"><a href="/addDate">Add Dates</a></li> -->
-  <li role="presentation"><a href="/addFreqshopper">Add VIP Shoppers</a></li>
-  <!-- <li role="presentation"><a href="/addPromotion">Add Promotions</a></li> -->
-  <li role="presentation"><a href="/addTransfers">Add Transfers</a></li>
-  <li role="presentation"><a href="/addStores">Add Bookstores</a></li>
-  <li role="presentation"><a href="/about_user">About</a></li>
+    <li role="presentation" class="active"><a href="">Transfers</a></li>
+    <li role="presentation"><a href="/promotionFeatures">Promotions</a></li>
+    <!-- <li role="presentation"><a href="/transfers">Transfers</a></li> -->
+    <li role="presentation"><a href="/addBook">Add Books</a></li>
+    <li role="presentation"><a href="/addClerk">Add Clerks</a></li>
+    <!-- <li role="presentation"><a href="/addDate">Add Dates</a></li> -->
+    <li role="presentation"><a href="/addFreqshopper">Add VIP Shoppers</a></li>
+    <!-- <li role="presentation"><a href="/addPromotion">Add Promotions</a></li> -->
+    <li role="presentation"><a href="/addTransfers">Add Transfers</a></li>
+    <li role="presentation"><a href="/addStores">Add Bookstores</a></li>
+    <li role="presentation"><a href="/about_user">About</a></li>
 </ul>
 </div>
-<h3 align="center">Past Promotion Details ordered by Net Profit</h1>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
@@ -72,14 +70,19 @@
   {% endif %}
 {% endwith %}
 <div class="ps">
-{% for i in promotionFeatures %}
+{% for i in transfers %}
 <div class="panel panel-info">
   <div class="panel-heading">
-    <div><h3 class="panel-title">{{i.promotion_key}}: {{i.promotion_name}} (Promotion media type: {{i.promotion_media_type}})</h3></div>
+    <div><h3 class="panel-title">Transfer ID: {{pos_transfer_id}} ----- Clerk: {{i.clerk_id}} / Shopper: {{i.shopper_id}} ----- {{i.Date_Time}}</h3></div>
+    {% if i.email != None %}
+    <div id="icon">   
+      <a class="glyphicon glyphicon-pencil" href="/update/{{i.email}}/{{ i.isbn }}"></a>&nbsp &nbsp
+      <a class="glyphicon glyphicon-trash" id="del" href="/delete/{{i.email}}/{{ i.isbn }}"></a>
+    </div>
+    {% endif %}
   </div>
   <div class="panel-body">
-    <p>{{i.discount}}% discount ----- From {{i.promotion_begin_date}} To {{i.promotion_end_date}}</p>
-    <p>${{i.total_income}} Total Income with ${{i.promotion_cost}} Promotion Cost ----- a Net Profit of ${{i.net_profit}}</p>
+    <p>Store: {{i.store_name}} ----- Book: {{i.Book_name}} ----- Promotion: {{i.promotion_name}}</p>
   </div>
 </div>
 {% endfor %}

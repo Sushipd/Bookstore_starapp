@@ -37,6 +37,18 @@ def promotionFeatures():
         flash(str(e))
 
 
+@app.route('/transfers')
+def transfers():
+    try:
+        if session['user_available']:
+            transfers = models.getTransfers()
+            return render_template('transfers.html', transfers=transfers)
+        flash('User is not Authenticated')
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
+
+
 # @app.route('/add', methods=['GET', 'POST'])
 # def add_reader():
 #     try:
@@ -149,7 +161,7 @@ def add_transfers():
             reader = AddTransferForm(request.form)
             if request.method == 'POST':
                 models.addTransfer({"POS_transfer_id": reader.POS_transfer_id.data, "date_key": reader.date_key.data, "book_key": reader.book_key.data, "clerk_id": reader.clerk_id.data, "shopper_id": reader.shopper_id.data, "promotion_key": reader.promotion_key.data, "store_key": reader.store_key.data})
-                #return redirect(url_for('show_books'))
+                return redirect(url_for('transfers'))
             return render_template('addTransfers.html', reader=reader)
     except Exception as e:
         flash(str(e))
@@ -167,6 +179,16 @@ def add_transfers():
 #         return redirect(url_for('index'))
 
 
+@app.route('/delete/<pos_transfer_id>', methods=('GET', 'POST'))
+def delete_transfer(pos_transfer_id):
+    try:
+        models.deleteTransfer({"pos_transfer_id": pos_transfer_id})
+        return redirect(url_for('transfers'))
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
+
+
 # @app.route('/update/<email>/<isbn>', methods=('GET', 'POST'))
 # def update_book(isbn, email):
 #     try:
@@ -179,6 +201,20 @@ def add_transfers():
 #     except Exception as e:
 #         flash(str(e))
 #         return redirect(url_for('index'))
+
+
+@app.route('/updateTransfers/<POS_transfer_id>/<date_key>/<book_key>/<clerk_id>/<shopper_id>/<promotion_key>/<store_key>', methods=('GET', 'POST'))
+def update_transfer(POS_transfer_id,date_key,book_key,clerk_id,shopper_id,promotion_key,store_key):
+    try:
+        br = models.getTransfer({"pos_transfer_id": pos_transfer_id})
+        reader = AddReaderForm(request.form, obj=br)
+        if request.method == 'POST':
+            models.updateTransfer({"POS_transfer_id": reader.POS_transfer_id.data, "date_key": reader.date_key.data, "book_key": reader.book_key.data, "clerk_id": reader.clerk_id.data, "shopper_id": reader.shopper_id.data, "promotion_key": reader.promotion_key.data, "store_key": reader.store_key.data})
+            return redirect(url_for('transfers'))
+        return render_template('updateTransfers.html', reader=reader)
+    except Exception as e:
+        flash(str(e))
+        return redirect(url_for('index'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])

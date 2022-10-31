@@ -37,8 +37,20 @@ class Models:
     def addTransfer(self, value):
         return self.executeRawSql("""INSERT INTO transfer(POS_transfer_id, date_key, book_key, clerk_id, shopper_id, promotion_key, store_key) VALUES(:POS_transfer_id, :date_key, :book_key, :clerk_id, :shopper_id, :promotion_key, :store_key);""", value)
 
-    def getAllTransfers(self):
-        return self.executeRawSql("SELECT * FROM transfer;").mappings().all()
+    def getTransfers(self):
+        return self.executeRawSql("select t.pos_transfer_id, t.date_key, t.book_key, t.clerk_id, t.shopper_id, t.promotion_key, t.store_key, d.Date_Time, b.Book_name, p.promotion_name, s.store_name from transfer t, date d, book b, promotions p, stores s where t.date_key=d.Date_Key and t.book_key=b.book_key and t.promotion_key=p.promotion_key and t.store_key=s.store_key order by pos_transfer_id desc LIMIT 20;").mappings().all()
+
+    def deleteTransfer(self, value):
+        return self.executeRawSql("DELETE FROM transfer where pos_transfer_id=:pos_transfer_id;", value)
+    
+    def getTransfer(self, value):
+        values = self.executeRawSql("""SELECT * FROM transfer WHERE pos_transfer_id=:pos_transfer_id;""", value).mappings().all()
+        if len(values) == 0:
+            raise Exception("Transfer {} has not been assigned".format(value["pos_transfer_id"]))
+        return values[0]
+
+    def updateTransfer(self, value):
+        return self.executeRawSql("""UPDATE transfer SET date_key=:date_key,book_key=:book_key,clerk_id=:clerk_id,shopper_id=:shopper_id,promotion_key=:promotion_key,store_key=:store_key WHERE pos_transfer_id=:pos_transfer_id;""", value)
 
     def getPromotionFeatures(self):
         return self.executeRawSql("select p.promotion_key, p.promotion_name, (1-p.price_reduction_type)*100 as discount, p.promotion_begin_date, p.promotion_cost, p.promotion_media_type, p.promotion_end_date, q.total_income, (q.total_income-p.promotion_cost) as net_profit from (select p.promotion_key, sum(b.price*p.price_reduction_type) as total_income from promotions p, transfer t, book b where p.promotion_key = t.promotion_key and t.book_key = b.book_key group by p.promotion_key) as q, promotions p where q.promotion_key = p.promotion_key and p.price_reduction_type<1 order by net_profit desc; ").mappings().all()

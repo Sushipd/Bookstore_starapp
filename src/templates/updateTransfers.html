@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Add Bookstores</title>
+    <title>Update Transfers</title>
 
     <link
       href="/../../static/bootstrap/css/bootstrap.min.css"
@@ -64,7 +64,6 @@
     </div>
     <div>
       <ul class="nav nav-tabs">
-        <li role="presentation"><a href="/transfers">Transfers</a></li>
         <li role="presentation"><a href="/promotionFeatures">Promotions</a></li>
         <!-- <li role="presentation"><a href="/transfers">Transfers</a></li> -->
         <li role="presentation"><a href="/addBook">Add Books</a></li>
@@ -72,8 +71,8 @@
         <!-- <li role="presentation"><a href="/addDate">Add Dates</a></li> -->
         <li role="presentation"><a href="/addFreqshopper">Add VIP Shoppers</a></li>
         <!-- <li role="presentation"><a href="/addPromotion">Add Promotions</a></li> -->
-        <li role="presentation"><a href="/addTransfers">Add Transfers</a></li>
-        <li role="presentation" class="active"><a href="">Add Bookstores</a></li>
+        <li role="presentation" class="active"><a href="">Update Transfers</a></li>
+        <li role="presentation"><a href="/addStores">Add Bookstores</a></li>
         <li role="presentation"><a href="/about_user">About</a></li>
       </ul>
     </div>
@@ -82,43 +81,37 @@
         <table align="center">
           <tr>
             <td>
-              {{ reader.store_key(class="form-control",placeholder="Store key") }}
+              {{ reader.POS_transfer_id(class="form-control",placeholder="Transfer ID") }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ reader.store_name(class="form-control",rows="3",placeholder="Store name") }}
+              {{ reader.date_key(class="form-control",rows="3",placeholder="Date key") }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ reader.store_street_address(class="form-control",rows="7",placeholder="Store street address") }}
+              {{ reader.book_key(class="form-control",rows="5",placeholder="Book key") }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ reader.store_city(class="form-control",rows="9",placeholder="Store city") }}
+              {{ reader.clerk_id(class="form-control",rows="7",placeholder="Clerk ID") }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ reader.store_country(class="form-control",rows="11",placeholder="Store country") }}
+              {{ reader.shopper_id(class="form-control",rows="9",placeholder="Shopper ID") }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ reader.store_manager(class="form-control",rows="13",placeholder="Store manager") }}
+              {{ reader.promotion_key(class="form-control",rows="11",placeholder="Promotion key") }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ reader.selling_square_footage(class="form-control",rows="15",placeholder="Selling square footage") }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ reader.first_open_date(class="form-control",rows="17",placeholder="First open date")
-              }}
+              {{ reader.store_key(class="form-control",rows="13",placeholder="Store key") }}
             </td>
           </tr>
           <tr>
