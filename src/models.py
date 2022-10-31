@@ -38,7 +38,7 @@ class Models:
         return self.executeRawSql("""INSERT INTO transfer(POS_transfer_id, date_key, book_key, clerk_id, shopper_id, promotion_key, store_key) VALUES(:POS_transfer_id, :date_key, :book_key, :clerk_id, :shopper_id, :promotion_key, :store_key);""", value)
 
     def getTransfers(self):
-        return self.executeRawSql("select t.pos_transfer_id, t.date_key, t.book_key, t.clerk_id, t.shopper_id, t.promotion_key, t.store_key, d.Date_Time, b.Book_name, p.promotion_name, s.store_name from transfer t, date d, book b, promotions p, stores s where t.date_key=d.Date_Key and t.book_key=b.book_key and t.promotion_key=p.promotion_key and t.store_key=s.store_key order by d.Date_Time desc LIMIT 20;").mappings().all()
+        return self.executeRawSql("select t.pos_transfer_id, t.date_key, t.book_key, t.clerk_id, t.shopper_id, t.promotion_key, t.store_key, d.Date_Time, b.Book_name, p.promotion_name, s.store_name from transfer t, date d, book b, promotions p, stores s where t.date_key=d.Date_Key and t.book_key=b.book_key and t.promotion_key=p.promotion_key and t.store_key=s.store_key order by d.Date_Time desc,t.clerk_id,t.shopper_id LIMIT 30;").mappings().all()
 
     def deleteTransfer(self, value):
         return self.executeRawSql("DELETE FROM transfer where pos_transfer_id=:pos_transfer_id;", value)
