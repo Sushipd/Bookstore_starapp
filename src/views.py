@@ -26,7 +26,7 @@ def index():
 
 
 @app.route('/promotionFeatures')
-def show_promotionFeatures():
+def promotionFeatures():
     try:
         if session['user_available']:
             promotionFeatures = models.getPromotionFeatures()
