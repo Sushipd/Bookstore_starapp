@@ -203,7 +203,7 @@ def delete_transfer(pos_transfer_id):
 #         return redirect(url_for('index'))
 
 
-@app.route('/updateTransfers/<date_key>/<book_key>/<clerk_id>/<shopper_id>/<promotion_key>/<store_key>/<pos_transfer_id>', methods=('GET', 'POST'))
+@app.route('/updateTransfers/<date_key>/<book_key>/<clerk_id>/<shopper_id>/<promotion_key>/<store_key>/<POS_transfer_id>', methods=('GET', 'POST'))
 def update_transfer(date_key,book_key,clerk_id,shopper_id,promotion_key,store_key,POS_transfer_id):
     try:
         br = models.getTransfer({"pos_transfer_id": POS_transfer_id})
@@ -241,7 +241,7 @@ def signin():
                 session['current_user'] = em
                 session['user_available'] = True
                 # return redirect(url_for('show_books'))
-                return redirect(url_for('promotionFeatures'))
+                return redirect(url_for('transfers'))
             else:
                 flash('Cannot sign in')
         return render_template('signin.html', signinform=signinform)
