@@ -73,16 +73,16 @@
 {% for i in transfers %}
 <div class="panel panel-info">
   <div class="panel-heading">
-    <div><h3 class="panel-title">Transfer ID: {{pos_transfer_id}} ----- Clerk: {{i.clerk_id}} / Shopper: {{i.shopper_id}} ----- {{i.Date_Time}}</h3></div>
+    <div><h3 class="panel-title">Transfer ID: {{i.pos_transfer_id}} ----- Clerk: {{i.clerk_id}} / Shopper: {{i.shopper_id}} ----- {{i.date_time}}</h3></div>
     {% if i.email != None %}
     <div id="icon">   
-      <a class="glyphicon glyphicon-pencil" href="/update/{{i.email}}/{{ i.isbn }}"></a>&nbsp &nbsp
-      <a class="glyphicon glyphicon-trash" id="del" href="/delete/{{i.email}}/{{ i.isbn }}"></a>
+      <a class="glyphicon glyphicon-pencil" href="/updateTransfers/{{i.pos_transfer_id}}/{{i.date_key}}/{{i.book_key}}/{{i.clerk_id}}/{{i.shopper_id}}/{{i.promotion_key}}/{{i.store_key}}"></a>&nbsp &nbsp
+      <a class="glyphicon glyphicon-trash" id="del" href="/delete/{{i.pos_transfer_id}}"></a>
     </div>
     {% endif %}
   </div>
   <div class="panel-body">
-    <p>Store: {{i.store_name}} ----- Book: {{i.Book_name}} ----- Promotion: {{i.promotion_name}}</p>
+    <p>Store: {{i.store_name}} ----- Book: {{i.book_name}} ----- Promotion: {{i.promotion_name}}</p>
   </div>
 </div>
 {% endfor %}

@@ -204,7 +204,7 @@ def delete_transfer(pos_transfer_id):
 
 
 @app.route('/updateTransfers/<POS_transfer_id>/<date_key>/<book_key>/<clerk_id>/<shopper_id>/<promotion_key>/<store_key>', methods=('GET', 'POST'))
-def update_transfer(POS_transfer_id,date_key,book_key,clerk_id,shopper_id,promotion_key,store_key):
+def update_transfer(pos_transfer_id,date_key,book_key,clerk_id,shopper_id,promotion_key,store_key):
     try:
         br = models.getTransfer({"pos_transfer_id": pos_transfer_id})
         reader = AddReaderForm(request.form, obj=br)
