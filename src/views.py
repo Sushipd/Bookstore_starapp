@@ -25,6 +25,18 @@ def index():
 #         flash(str(e))
 
 
+@app.route('/promotionFeatures')
+def show_promotionFeatures():
+    try:
+        if session['user_available']:
+            promotionFeatures = models.getPromotionFeatures()
+            return render_template('promotionFeatures.html', promotionFeatures=promotionFeatures)
+        flash('User is not Authenticated')
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
+
+
 # @app.route('/add', methods=['GET', 'POST'])
 # def add_reader():
 #     try:
@@ -193,7 +205,7 @@ def signin():
                 session['current_user'] = em
                 session['user_available'] = True
                 # return redirect(url_for('show_books'))
-                return redirect(url_for('about_user'))
+                return redirect(url_for('promotionFeatures'))
             else:
                 flash('Cannot sign in')
         return render_template('signin.html', signinform=signinform)

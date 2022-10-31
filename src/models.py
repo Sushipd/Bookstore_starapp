@@ -40,6 +40,13 @@ class Models:
     def getAllTransfers(self):
         return self.executeRawSql("SELECT * FROM transfer;").mappings().all()
 
+    def getPromotionFeatures(self):
+        return self.executeRawSql("select p.promotion_key, p.promotion_name, (1-p.price_reduction_type)*100 as discount, p.promotion_begin_date, p.promotion_cost, p.promotion_media_type, p.promotion_end_date, q.total_income, (q.total_income-p.promotion_cost) as net_profit from (select p.promotion_key, sum(b.price*p.price_reduction_type) as total_income from promotions p, transfer t, book b where p.promotion_key = t.promotion_key and t.book_key = b.book_key group by p.promotion_key) as q, promotions p where q.promotion_key = p.promotion_key and p.price_reduction_type<1 order by net_profit desc; ").mappings().all()
+
+    def getTotalSalesEachStore(self):
+        return self.executeRawSql("select s_z.store_key,s_z.store_name,s_z.store_street_address,d_z.calendar_month,d_z.calender_year,sum(tab.sales_amount) from stores s_z, date d_z, (select s.store_key,d.date_key,sum(b.price*p.price_reduction_type) as sales_amount from transfer t, book b, stores s, date d, promotions p where t.book_key = b.book_key and t.store_key = s.store_key and t.date_key = d.date_key and t.promotion_key=p.promotion_key group by s.store_key, d.date_key) as tab where s_z.store_key = tab.store_key and d_z.date_key = tab.date_key group by s_z.store_key,s_z.store_name,s_z.store_street_address,d_z.calendar_month, d_z.calender_year ORDER by d_z.calender_year, d_z.calendar_month asc;").mappings().all()
+
+
     # def updateAssignment(self, value):
     #     return self.executeRawSql("""UPDATE assignment SET email=:email WHERE isbn=:isbn;""", value)
     
@@ -112,8 +119,8 @@ class Models:
                 Date_Key VARCHAR(50) primary key,
                 Date_Time VARCHAR(50) not null,
                 Day_of_Week VARCHAR(50) not null,
-                Calendar_Month VARCHAR(50) not null,
-                Calender_Year VARCHAR(50) not null,
+                Calendar_Month INT not null,
+                Calender_Year INT not null,
                 Holiday VARCHAR(50) not null,
                 Weekday VARCHAR(50) not null
                 );
