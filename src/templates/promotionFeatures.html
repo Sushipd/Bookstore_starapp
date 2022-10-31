@@ -54,13 +54,14 @@
   <li role="presentation"><a href="/addBook">Add Books</a></li>
   <li role="presentation"><a href="/addClerk">Add Clerks</a></li>
   <!-- <li role="presentation"><a href="/addDate">Add Dates</a></li> -->
-  <li role="presentation"><a href="/addFreqshopper">Add Frequent Shoppers</a></li>
+  <li role="presentation"><a href="/addFreqshopper">Add VIP Shoppers</a></li>
   <!-- <li role="presentation"><a href="/addPromotion">Add Promotions</a></li> -->
   <li role="presentation"><a href="/addTransfers">Add Transfers</a></li>
   <li role="presentation"><a href="/addStores">Add Bookstores</a></li>
   <li role="presentation"><a href="/about_user">About</a></li>
 </ul>
 </div>
+<h1>Past Promotion Details ordered by Net Profit</h1>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
@@ -72,11 +73,11 @@
 {% for i in promotionFeatures %}
 <div class="panel panel-info">
   <div class="panel-heading">
-    <div><h3 class="panel-title">{{i.promotion_key}}:{{i.promotion_name}} (Promotion media type: {{i.promotion_media_type}})</h3></div>
+    <div><h3 class="panel-title">{{i.promotion_key}}: {{i.promotion_name}} (Promotion media type: {{i.promotion_media_type}})</h3></div>
   </div>
   <div class="panel-body">
-    <p>{{i.discount}}% discount from {{i.promotion_begin_date}} to {{i.promotion_end_date}}</p>
-    <p>${{i.total_income}} total income with ${{i.promotion_cost}} promotion cost, earn a net profit of ${{i.net_profit}}</p>
+    <p>{{i.discount}}% discount                    From {{i.promotion_begin_date}} To {{i.promotion_end_date}}</p>
+    <p>${{i.total_income}} Total Income with ${{i.promotion_cost}} Promotion Cost ----- a Net Profit of ${{i.net_profit}}</p>
   </div>
 </div>
 {% endfor %}
