@@ -76,7 +76,7 @@
     <div><h3 class="panel-title">Transfer ID: {{i.pos_transfer_id}} ----- Clerk: {{i.clerk_id}} / Shopper: {{i.shopper_id}} ----- {{i.date_time}}</h3></div>
     {% if i.email != None %}
     <div id="icon">   
-      <a class="glyphicon glyphicon-pencil" href="/updateTransfers/{{i.pos_transfer_id}}/{{i.date_key}}/{{i.book_key}}/{{i.clerk_id}}/{{i.shopper_id}}/{{i.promotion_key}}/{{i.store_key}}"></a>&nbsp &nbsp
+      <a class="glyphicon glyphicon-pencil" href="/updateTransfers/{{i.date_key}}/{{i.book_key}}/{{i.clerk_id}}/{{i.shopper_id}}/{{i.promotion_key}}/{{i.store_key}}/{{i.pos_transfer_id}}"></a>&nbsp &nbsp
       <a class="glyphicon glyphicon-trash" id="del" href="/delete/{{i.pos_transfer_id}}"></a>
     </div>
     {% endif %}
