@@ -60,26 +60,14 @@ class Models:
             raise Exception("We have no data for Month {} Year {}".format(value["calendar_month"], value["calender_year"]))
         return values
 
-    # def getBestClerksEachMonth(self, value):
-    #     values = self.executeRawSql("""select c.first_name, c.last_name, c.gender, c.email,c.clerk_id, d.calendar_month, d.calender_year, sum(p.price_reduction_type*b.price) as sale_vol from transfer t, book b, promotions p, clerk c, date d where t.clerk_id=c.clerk_id and t.book_key = b.book_key and t.promotion_key=p.promotion_key and t.date_key = d.date_key and d.calendar_month =: calendar_month and d.calender_year =: calender_year group by c.clerk_id, d.calendar_month, d.calender_year order by d.calender_year, d.calendar_month, sale_vol DESC limit 10;""", value).mappings().all()
-    #     if len(values) == 0:
-    #         raise Exception("We have no data for Month {} Year {}".format(value["calendar_month"], value["calender_year"]))
-    #     return values
-
     def getBestClerksEachMonth(self, value):
-        values = self.executeRawSql("""select c.first_name, c.last_name, c.gender, c.email,c.clerk_id, d.calendar_month, d.calender_year, sum(p.price_reduction_type*b.price) as sale_vol from transfer t, book b, promotions p, clerk c, date d where t.clerk_id=c.clerk_id and t.book_key = b.book_key and t.promotion_key=p.promotion_key and t.date_key = d.date_key and d.calendar_month =: calendar_month and d.calender_year =: calender_year group by c.clerk_id, d.calendar_month, d.calender_year order by d.calender_year, d.calendar_month, sale_vol DESC limit 10;""", value).mappings().all()
+        values = self.executeRawSql("""select c.first_name, c.last_name, c.gender, c.email,c.clerk_id, d.calendar_month, d.calender_year, sum(p.price_reduction_type*b.price) as sale_vol from transfer t, book b, promotions p, clerk c, date d where t.clerk_id=c.clerk_id and t.book_key = b.book_key and t.promotion_key=p.promotion_key and t.date_key = d.date_key and d.calendar_month=:calendar_month and d.calender_year=:calender_year group by c.clerk_id, d.calendar_month, d.calender_year order by d.calender_year, d.calendar_month, sale_vol DESC limit 10;""", value).mappings().all()
         if len(values) == 0:
             raise Exception("We have no data for Month {} Year {}".format(value["calendar_month"], value["calender_year"]))
         return values
 
-    # def getBookTypesEachUser(self, value):
-    #     values = self.executeRawSql("""select fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone, b."type", count(b."type") from transfer t, freq_shopper fs, book b where t.shopper_id = fs.shopper_id and t.book_key = b.book_key and fs.shopper_id =: shopper_id group by b."type", fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone order by count desc;""", value).mappings().all()
-    #     if len(values) == 0:
-    #         raise Exception("We see zero transfer for {}".format(value["shopper_id"]))
-    #     return values
-
     def getBookTypesEachUser(self, value):
-        values = self.executeRawSql("""select fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone, b.type, count(b.type) as count from transfer t, freq_shopper fs, book b where t.shopper_id = fs.shopper_id and t.book_key = b.book_key and fs.shopper_id =: shopper_id group by b.type, fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone order by count desc;""", value).mappings().all()
+        values = self.executeRawSql("""select fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone, b.type, count(b.type) as count from transfer t, freq_shopper fs, book b where t.shopper_id = fs.shopper_id and t.book_key = b.book_key and fs.shopper_id=:shopper_id group by b.type, fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone order by count desc;""", value).mappings().all()
         if len(values) == 0:
             raise Exception("We see zero transfer for {}".format(value["shopper_id"]))
         return values
