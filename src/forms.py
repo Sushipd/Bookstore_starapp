@@ -12,12 +12,12 @@ def length_check(form,field):
 #     isbn = StringField('ISBN', validators = [DataRequired()])
 
 class BestBooksForm(Form):
-    Calendar_Month = StringField('Calendar month', validators = [DataRequired()])
-    Calender_Year = StringField('Calendar year', validators=[ DataRequired()])
+    calendar_month = StringField('Calendar month', validators = [DataRequired()])
+    calender_year = StringField('Calendar year', validators=[ DataRequired()])
 
 class BestClerksForm(Form):
-    Calendar_Month = StringField('Calendar month', validators = [DataRequired()])
-    Calender_Year = StringField('Calendar year', validators=[ DataRequired()])
+    calendar_month = StringField('Calendar month', validators = [DataRequired()])
+    calender_year = StringField('Calendar year', validators=[ DataRequired()])
 
 class AddBookForm(Form):
     book_key = StringField('Book key', validators=[ DataRequired()])
