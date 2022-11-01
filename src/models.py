@@ -4,9 +4,8 @@ import os
 
 class Models:
     def __init__(self):
-        self.engine = create_engine(os.environ.get('DB_URL', 'postgresql://postgres:Zse$rfvgy7ujm@localhost:5432/postgres'))
-# postgresql://postgres:Zse$rfvgy7ujm@localhost:5432/bookstore
-# postgresql://hieu:hieu@localhost:5432/bt5110
+        self.engine = create_engine(os.environ.get('DB_URL', 'postgresql://hieu:hieu@localhost:5432/bt5110'))
+
     def executeRawSql(self, statement, params={}):
         out = None
         with self.engine.connect() as con:
@@ -62,13 +61,13 @@ class Models:
         return values
 
     def getBestClerksEachMonth(self, value):
-        values = self.executeRawSql("""select c0.first_name, c0.last_name, c0.gender, c0.email, first_stage.calendar_month, first_stage.calender_year, first_stage.sale_vol from clerk c0, (select c.clerk_id, d.calendar_month, d.calender_year,sum(p.price_reduction_type*b.price) as sale_vol from transfer t, book b, promotions p, clerk c, date d where t.clerk_id=c.clerk_id and t.book_key = b.book_key and t.promotion_key=p.promotion_key and t.date_key = d.date_key and d.calendar_month =: calendar_month and d.calender_year =: calender_year group by c.clerk_id, d.calendar_month, d.calender_year order by d.calender_year, d.calendar_month, sale_vol DESC) as first_stage where c0.clerk_id = first_stage.clerk_id limit 10;""", value).mappings().all()
+        values = self.executeRawSql("""select c.first_name, c.last_name, c.gender, c.email,c.clerk_id, d.calendar_month, d.calender_year, sum(p.price_reduction_type*b.price) as sale_vol from transfer t, book b, promotions p, clerk c, date d where t.clerk_id=c.clerk_id and t.book_key = b.book_key and t.promotion_key=p.promotion_key and t.date_key = d.date_key and d.calendar_month =: calendar_month and d.calender_year =: calender_year group by c.clerk_id, d.calendar_month, d.calender_year order by d.calender_year, d.calendar_month, sale_vol DESC limit 10;""", value).mappings().all()
         if len(values) == 0:
             raise Exception("We have no data for Month {} Year {}".format(value["calendar_month"], value["calender_year"]))
         return values
 
     def getBookTypesEachUser(self, value):
-        values = self.executeRawSql("""select shop.shopper_id, conclusion.type, conclusion.count,shop.title, shop.first_name, shop.last_name, shop.date_of_birth, shop.street_address, shop.phone from freq_shopper shop,(select fs.shopper_id, b."type",count(b."type") from transfer t, freq_shopper fs, book b where t.shopper_id = fs.shopper_id and t.book_key = b.book_key group by fs.shopper_id,b."type") as conclusion where shop.shopper_id=conclusion.shopper_id and shop.shopper_id =: shopper_id order by shop.shopper_id, count desc;""", value).mappings().all()
+        values = self.executeRawSql("""select fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone, b."type", count(b."type") from transfer t, freq_shopper fs, book b where t.shopper_id = fs.shopper_id and t.book_key = b.book_key and fs.shopper_id =: shopper_id group by b."type", fs.title, fs.first_name, fs.last_name, fs.date_of_birth, fs.street_address, fs.phone order by count desc;""", value).mappings().all()
         if len(values) == 0:
             raise Exception("We see zero transfer for {}".format(value["shopper_id"]))
         return values
