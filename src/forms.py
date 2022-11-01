@@ -19,6 +19,9 @@ class BestClerksForm(Form):
     calendar_month = StringField('Calendar month', validators = [DataRequired()])
     calender_year = StringField('Calendar year', validators=[ DataRequired()])
 
+class BookTypesForm(Form):
+    shopper_id = StringField('Shopper ID', validators = [DataRequired()])
+
 class AddBookForm(Form):
     book_key = StringField('Book key', validators=[ DataRequired()])
     Printshop = StringField('Print shop', validators = [DataRequired()])
