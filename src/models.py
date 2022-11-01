@@ -55,8 +55,23 @@ class Models:
     def getPromotionFeatures(self):
         return self.executeRawSql("select p.promotion_key, p.promotion_name, (1-p.price_reduction_type)*100 as discount, p.promotion_begin_date, p.promotion_cost, p.promotion_media_type, p.promotion_end_date, q.total_income, (q.total_income-p.promotion_cost) as net_profit from (select p.promotion_key, sum(b.price*p.price_reduction_type) as total_income from promotions p, transfer t, book b where p.promotion_key = t.promotion_key and t.book_key = b.book_key group by p.promotion_key) as q, promotions p where q.promotion_key = p.promotion_key and p.price_reduction_type<1 order by net_profit desc; ").mappings().all()
 
-    def getTotalSalesEachStore(self):
-        return self.executeRawSql("select s_z.store_key,s_z.store_name,s_z.store_street_address,d_z.calendar_month,d_z.calender_year,sum(tab.sales_amount) from stores s_z, date d_z, (select s.store_key,d.date_key,sum(b.price*p.price_reduction_type) as sales_amount from transfer t, book b, stores s, date d, promotions p where t.book_key = b.book_key and t.store_key = s.store_key and t.date_key = d.date_key and t.promotion_key=p.promotion_key group by s.store_key, d.date_key) as tab where s_z.store_key = tab.store_key and d_z.date_key = tab.date_key group by s_z.store_key,s_z.store_name,s_z.store_street_address,d_z.calendar_month, d_z.calender_year ORDER by d_z.calender_year, d_z.calendar_month asc;").mappings().all()
+    def getBestSellersEachMonth(self, value):
+        values = self.executeRawSql("""select t.book_key, count(*), b.printshop, b.writer, b.publication_date, b.type, b.book_name, b.price from transfer t, date d, book b where t.date_key = d.date_key and t.book_key = b.book_key and d.calendar_month=:calendar_month and d.calender_year=:calender_year group by t.book_key, b.printshop, b.writer, b.publication_date, b.type, b.book_name, b.price order by count(*) DESC, b.publication_date DESC limit 20;""", value).mappings().all()
+        if len(values) == 0:
+            raise Exception("We have no data for Month {} Year {}".format(value["calendar_month"], value["calender_year"]))
+        return values
+
+    def getBestClerksEachMonth(self, value):
+        values = self.executeRawSql("""select c0.first_name, c0.last_name, c0.gender, c0.email, first_stage.calendar_month, first_stage.calender_year, first_stage.sale_vol from clerk c0, (select c.clerk_id, d.calendar_month, d.calender_year,sum(p.price_reduction_type*b.price) as sale_vol from transfer t, book b, promotions p, clerk c, date d where t.clerk_id=c.clerk_id and t.book_key = b.book_key and t.promotion_key=p.promotion_key and t.date_key = d.date_key and d.calendar_month =: calendar_month and d.calender_year =: calender_year group by c.clerk_id, d.calendar_month, d.calender_year order by d.calender_year, d.calendar_month, sale_vol DESC) as first_stage where c0.clerk_id = first_stage.clerk_id limit 10;""", value).mappings().all()
+        if len(values) == 0:
+            raise Exception("We have no data for Month {} Year {}".format(value["calendar_month"], value["calender_year"]))
+        return values
+
+    def getBookTypesEachUser(self, value):
+        values = self.executeRawSql("""select shop.shopper_id, conclusion.type, conclusion.count,shop.title, shop.first_name, shop.last_name, shop.date_of_birth, shop.street_address, shop.phone from freq_shopper shop,(select fs.shopper_id, b."type",count(b."type") from transfer t, freq_shopper fs, book b where t.shopper_id = fs.shopper_id and t.book_key = b.book_key group by fs.shopper_id,b."type") as conclusion where shop.shopper_id=conclusion.shopper_id and shop.shopper_id =: shopper_id order by shop.shopper_id, count desc;""", value).mappings().all()
+        if len(values) == 0:
+            raise Exception("We see zero transfer for {}".format(value["shopper_id"]))
+        return values
 
 
     # def updateAssignment(self, value):

@@ -49,6 +49,35 @@ def transfers():
         flash(str(e))
 
 
+@app.route('/bestBooks', methods=['GET', 'POST'])
+def bestBooks():
+    try:
+        if session['user_available']:
+            reader = BestBooksForm(request.form)
+            if request.method == 'POST':
+                bestBooks = models.getBestSellersEachMonth({"calendar_month": reader.calendar_month.data, "calender_year": reader.calender_year.data})
+                return render_template('bestBooks2.html', bestBooks=bestBooks)
+            return render_template('bestBooks.html', reader=reader)
+    except Exception as e:
+        flash(str(e))
+    flash('User is not Authenticated')
+    return redirect(url_for('index'))
+
+
+# @app.route('/bestBooks2/<date_key>/<book_key>/<clerk_id>/<shopper_id>/<promotion_key>/<store_key>/<POS_transfer_id>', methods=('GET', 'POST'))
+# def bestBooks2(date_key,book_key,clerk_id,shopper_id,promotion_key,store_key,POS_transfer_id):
+#     try:
+#         br = models.getTransfer({"pos_transfer_id": POS_transfer_id})
+#         reader = AddTransferForm(request.form, obj=br)
+#         if request.method == 'POST':
+#             models.updateTransfer({"pos_transfer_id": reader.POS_transfer_id.data, "date_key": reader.date_key.data, "book_key": reader.book_key.data, "clerk_id": reader.clerk_id.data, "shopper_id": reader.shopper_id.data, "promotion_key": reader.promotion_key.data, "store_key": reader.store_key.data})
+#             return redirect(url_for('transfers'))
+#         return render_template('updateTransfers.html', reader=reader)
+#     except Exception as e:
+#         flash(str(e))
+#         return redirect(url_for('index'))
+
+
 # @app.route('/add', methods=['GET', 'POST'])
 # def add_reader():
 #     try:

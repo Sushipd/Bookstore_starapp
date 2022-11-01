@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Update Transfers</title>
+    <title>Best Sellers This Month</title>
 
     <link
       href="/../../static/bootstrap/css/bootstrap.min.css"
@@ -65,14 +65,14 @@
     <div>
       <ul class="nav nav-tabs">
         <li role="presentation"><a href="/transfers">Transfers</a></li>
-        <li role="presentation"><a href="/bestBooks">Best Books</a></li>
+        <li role="presentation" class="active"><a href="">Best Books</a></li>
         <!-- <li role="presentation"><a href="/bestClerks">Best Clerks</a></li>
         <li role="presentation"><a href="/bookTypes">Favorite book types</a></li> -->
         <li role="presentation"><a href="/promotionFeatures">Promotions</a></li>
         <li role="presentation"><a href="/addBook">Add Books</a></li>
         <li role="presentation"><a href="/addClerk">Add Clerks</a></li>
         <li role="presentation"><a href="/addFreqshopper">Add VIP Shoppers</a></li>
-        <li role="presentation" class="active"><a href="">Update Transfers</a></li>
+        <li role="presentation"><a href="/addTransfers">Add Transfers</a></li>
         <li role="presentation"><a href="/addStores">Add Bookstores</a></li>
         <li role="presentation"><a href="/about_user">About</a></li>
       </ul>
@@ -82,37 +82,12 @@
         <table align="center">
           <tr>
             <td>
-              {{ reader.POS_transfer_id(class="form-control",placeholder="Transfer ID") }}
+              {{ reader.calendar_month(class="form-control",placeholder="Calendar month") }}
             </td>
           </tr>
           <tr>
             <td>
-              {{ reader.date_key(class="form-control",rows="3",placeholder="Date key") }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ reader.book_key(class="form-control",rows="5",placeholder="Book key") }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ reader.clerk_id(class="form-control",rows="7",placeholder="Clerk ID") }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ reader.shopper_id(class="form-control",rows="9",placeholder="Shopper ID") }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ reader.promotion_key(class="form-control",rows="11",placeholder="Promotion key") }}
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {{ reader.store_key(class="form-control",rows="13",placeholder="Store key") }}
+              {{ reader.calender_year(class="form-control",rows="3",placeholder="Calendar year") }}
             </td>
           </tr>
           <tr>
