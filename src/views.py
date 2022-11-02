@@ -88,7 +88,7 @@ def sales():
         if session['user_available']:
             reader = SalesForm(request.form)
             if request.method == 'POST':
-                salesAmount = models.getSalesEachMonthForStore({"shopper_id": reader.shopper_id.data})
+                salesAmount = models.getSalesEachMonthForStore({"store_key": reader.store_key.data})
                 return render_template('sales2.html', salesAmount=salesAmount)
             return render_template('sales.html', reader=reader)
     except Exception as e:
@@ -103,7 +103,7 @@ def mostFreqShopper():
         if session['user_available']:
             reader = MostFreqShopperForm(request.form)
             if request.method == 'POST':
-                mostFreqShopper = models.getMostFreqShopperForStore({"shopper_id": reader.shopper_id.data})
+                mostFreqShopper = models.getMostFreqShopperForStore({"store_key": reader.store_key.data})
                 return render_template('mostFreqShopper2.html', mostFreqShopper=mostFreqShopper)
             return render_template('mostFreqShopper.html', reader=reader)
     except Exception as e:
