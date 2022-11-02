@@ -22,6 +22,12 @@ class BestClerksForm(Form):
 class BookTypesForm(Form):
     shopper_id = StringField('Shopper ID', validators = [DataRequired()])
 
+class SalesForm(Form):
+    shopper_id = StringField('Shopper ID', validators = [DataRequired()])
+
+class MostFreqShopperForm(Form):
+    shopper_id = StringField('Shopper ID', validators = [DataRequired()])
+
 class AddBookForm(Form):
     book_key = StringField('Book key', validators=[ DataRequired()])
     Printshop = StringField('Print shop', validators = [DataRequired()])

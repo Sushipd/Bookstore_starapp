@@ -72,6 +72,17 @@ class Models:
             raise Exception("We see zero transfer for {}".format(value["shopper_id"]))
         return values
 
+    def getSalesEachMonthForStore(self, value):
+        values = self.executeRawSql("""Select date.Calender_Year,date.Calendar_Month,count(tr.POS_transfer_id) from transfer tr, date where tr.store_key=:store_key and date.date_key=tr.date_key group by date.Calender_Year,date.Calendar_Month order by date.Calender_Year,date.Calendar_Month asc;""", value).mappings().all()
+        if len(values) == 0:
+            raise Exception("We do not have {}".format(value["store_key"]))
+        return values
+        
+    def getMostFreqShopperForStore(self, value):
+        values = self.executeRawSql("""SELECT s.first_name,s.last_name,count(tr.pos_transfer_id) from transfer tr,freq_shopper s where s.shopper_id=tr.shopper_id and tr.store_key=:store_key group by s.first_name,s.last_name order by count(tr.pos_transfer_id) desc limit(10);""", value).mappings().all()
+        if len(values) == 0:
+            raise Exception("We do not have {}".format(value["store_key"]))
+        return values
 
     # def updateAssignment(self, value):
     #     return self.executeRawSql("""UPDATE assignment SET email=:email WHERE isbn=:isbn;""", value)

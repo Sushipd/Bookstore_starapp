@@ -1,7 +1,7 @@
 from flask import request, session, redirect, url_for, render_template, flash
 
 from . models import Models
-from . forms import BestBooksForm, BestClerksForm, BookTypesForm, AddBookForm, AddClerkForm, AddDateForm, AddFreqShopperForm, AddPromotionForm, AddStoreForm, AddTransferForm, SignUpForm, SignInForm 
+from . forms import BestBooksForm, BestClerksForm, BookTypesForm, SalesForm, MostFreqShopperForm, AddBookForm, AddClerkForm, AddDateForm, AddFreqShopperForm, AddPromotionForm, AddStoreForm, AddTransferForm, SignUpForm, SignInForm 
 # AddReaderForm, 
 
 from src import app
@@ -11,18 +11,6 @@ models = Models()
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-# @app.route('/books')
-# def show_books():
-#     try:
-#         if session['user_available']:
-#             booksAndAssignments = models.getBooksAndAssignments()
-#             return render_template('books.html', booksAndAssignments=booksAndAssignments)
-#         flash('User is not Authenticated')
-#         return redirect(url_for('index'))
-#     except Exception as e:
-#         flash(str(e))
 
 
 @app.route('/promotionFeatures')
@@ -94,19 +82,34 @@ def bookTypes():
     return redirect(url_for('index'))
 
 
-# @app.route('/add', methods=['GET', 'POST'])
-# def add_reader():
-#     try:
-#         if session['user_available']:
-#             reader = AddReaderForm(request.form)
-#             if request.method == 'POST':
-#                 models.addAssignment({"email": reader.email.data, "isbn": reader.isbn.data})
-#                 return redirect(url_for('show_books'))
-#             return render_template('add.html', reader=reader)
-#     except Exception as e:
-#         flash(str(e))
-#     flash('User is not Authenticated')
-#     return redirect(url_for('index'))
+@app.route('/sales', methods=['GET', 'POST'])
+def sales():
+    try:
+        if session['user_available']:
+            reader = SalesForm(request.form)
+            if request.method == 'POST':
+                salesAmount = models.getSalesEachMonthForStore({"shopper_id": reader.shopper_id.data})
+                return render_template('sales2.html', salesAmount=salesAmount)
+            return render_template('sales.html', reader=reader)
+    except Exception as e:
+        flash(str(e))
+    flash('User is not Authenticated')
+    return redirect(url_for('index'))
+
+
+@app.route('/mostFreqShopper', methods=['GET', 'POST'])
+def mostFreqShopper():
+    try:
+        if session['user_available']:
+            reader = MostFreqShopperForm(request.form)
+            if request.method == 'POST':
+                mostFreqShopper = models.getMostFreqShopperForStore({"shopper_id": reader.shopper_id.data})
+                return render_template('mostFreqShopper2.html', mostFreqShopper=mostFreqShopper)
+            return render_template('mostFreqShopper.html', reader=reader)
+    except Exception as e:
+        flash(str(e))
+    flash('User is not Authenticated')
+    return redirect(url_for('index'))
 
 
 @app.route('/addStores', methods=['GET', 'POST'])
@@ -122,21 +125,6 @@ def add_store():
         flash(str(e))
     flash('User is not Authenticated')
     return redirect(url_for('index'))
-
-
-# @app.route('/addDate', methods=['GET', 'POST'])
-# def add_date():
-#     try:
-#         if session['user_available']:
-#             reader = AddReaderForm(request.form)
-#             if request.method == 'POST':
-#                 models.addDate({"Date_Key": reader.Date_Key.data, "Date_Time": reader.Date_Time.data, "Day_of_Week": reader.Day_of_Week.data, "Calendar_Month": reader.Calendar_Month.data, "Calender_Year": reader.Calender_Year.data, "Holiday": reader.Holiday.data, "Weekday": reader.Weekday.data})
-#                 #return redirect(url_for('show_books'))
-#             return render_template('addDate.html', reader=reader)
-#     except Exception as e:
-#         flash(str(e))
-#     flash('User is not Authenticated')
-#     return redirect(url_for('index'))
 
 
 @app.route('/addBook', methods=['GET', 'POST'])
@@ -167,21 +155,6 @@ def add_clerk():
         flash(str(e))
     flash('User is not Authenticated')
     return redirect(url_for('index'))
-
-
-# @app.route('/addPromotion', methods=['GET', 'POST'])
-# def add_promotion():
-#     try:
-#         if session['user_available']:
-#             reader = AddReaderForm(request.form)
-#             if request.method == 'POST':
-#                 models.addpromotion({"promotion_key": reader.promotion_key.data, "promotion_name": reader.promotion_name.data, "price_reduction_type": reader.price_reduction_type.data,"promotion_media_type":reader.promotion_media_type.data,"promotion_cost":reader.promotion_cost.data,"promotion_begin_date":reader.promotion_begin_date.data,"promotion_end_date":reader.promotion_end_date.data})
-#                 #return redirect(url_for('show_promotions'))
-#             return render_template('addPromotion.html', reader=reader)
-#     except Exception as e:
-#         flash(str(e))
-#     flash('User is not Authenticated')
-#     return redirect(url_for('index'))
     
 
 @app.route('/addFreqshopper', methods=['GET', 'POST'])
@@ -214,16 +187,6 @@ def add_transfers():
     return redirect(url_for('index'))
 
 
-# @app.route('/delete/<email>/<isbn>', methods=('GET', 'POST'))
-# def delete_book(isbn, email):
-#     try:
-#         models.deleteAssignment({"email": email, "isbn": isbn})
-#         return redirect(url_for('show_books'))
-#     except Exception as e:
-#         flash(str(e))
-#         return redirect(url_for('index'))
-
-
 @app.route('/delete/<pos_transfer_id>', methods=('GET', 'POST'))
 def delete_transfer(pos_transfer_id):
     try:
@@ -232,20 +195,6 @@ def delete_transfer(pos_transfer_id):
     except Exception as e:
         flash(str(e))
         return redirect(url_for('index'))
-
-
-# @app.route('/update/<email>/<isbn>', methods=('GET', 'POST'))
-# def update_book(isbn, email):
-#     try:
-#         br = models.getAssignment({"email": email, "isbn": isbn})
-#         reader = AddReaderForm(request.form, obj=br)
-#         if request.method == 'POST':
-#             models.updateAssignment({"email": reader.email.data, "isbn": reader.isbn.data})
-#             return redirect(url_for('show_books'))
-#         return render_template('update.html', reader=reader)
-#     except Exception as e:
-#         flash(str(e))
-#         return redirect(url_for('index'))
 
 
 @app.route('/updateTransfers/<date_key>/<book_key>/<clerk_id>/<shopper_id>/<promotion_key>/<store_key>/<POS_transfer_id>', methods=('GET', 'POST'))

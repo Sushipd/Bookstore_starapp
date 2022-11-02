@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Best Sellers This Month</title>
+    <title>Sales Each Month For Store</title>
 
     <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
@@ -48,15 +48,15 @@
  </ul> 
 </div>
 <div>
-    <ul class="nav nav-tabs">
-      <li role="presentation"><a href="/transfers">Transfers</a></li>
-      <li role="presentation" class="active"><a href="">Best Books</a></li>
-      <li role="presentation"><a href="/bestClerks">Best Clerks</a></li>
-      <li role="presentation"><a href="/bookTypes">Favorite book types</a></li>
-      <li role="presentation"><a href="/sales">Sales for Store</a></li>
-      <li role="presentation"><a href="/mostFreqShopper">Most Frequent Shoppers For Store</a></li>
-      <li role="presentation"><a href="/promotionFeatures">Promotions</a></li>
-    </ul>
+<ul class="nav nav-tabs">
+    <li role="presentation"><a href="/transfers">Transfers</a></li>
+    <li role="presentation"><a href="/bestBooks">Best Books</a></li>
+    <li role="presentation"><a href="/bestClerks">Best Clerks</a></li>
+    <li role="presentation"><a href="/bookTypes">Favorite book types</a></li>
+    <li role="presentation" class="active"><a href="">Sales for Store</a></li>
+    <li role="presentation"><a href="/mostFreqShopper">Most Frequent Shoppers For Store</a></li>
+    <li role="presentation"><a href="/promotionFeatures">Promotions</a></li>
+</ul>
 </div>
 <div>
     <ul class="nav nav-tabs">
@@ -68,7 +68,6 @@
         <li role="presentation"><a href="/about_user">About</a></li>
     </ul>
 </div>
-<div>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
@@ -77,18 +76,13 @@
   {% endif %}
 {% endwith %}
 <div class="ps">
-{% for i in bestBooks %}
+{% for i in salesAmount %}
 <div class="panel panel-info">
   <div class="panel-heading">
-    <div><h3 class="panel-title">{{i.book_key}}: {{i.book_name}} ----- Count: {{i.count}}</h3></div>
+    <div><h3 class="panel-title">Books sold on Month {{i.calendar_month}} Year {{i.calender_year}}</h3></div>
   </div>
   <div class="panel-body">
-    <p>Book name: {{i.book_name}}</p>
-    <p>Book type: {{i.type}}</p>
-    <p>Printshop: {{i.printshop}}</p>
-    <p>Writer: {{i.writer}}</p>
-    <p>Publication date: {{i.publication_date}}</p>
-    <p>Price: {{i.price}}</p>
+    <p>{{i.count}} books bought by VIPs</p>
   </div>
 </div>
 {% endfor %}
