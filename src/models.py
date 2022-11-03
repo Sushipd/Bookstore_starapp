@@ -96,31 +96,6 @@ class Models:
     def getStores(self):
         return self.executeRawSql("select st.store_key, st.store_name, st.store_street_address, st.store_city, st.store_country, st.store_manager, st.selling_square_footage, st.first_open_date, count(tr.pos_transfer_id) from stores st, transfer tr where st.store_key = tr.store_key group by st.store_key, st.store_name, st.store_street_address, st.store_city, st.store_country, st.store_manager, st.selling_square_footage, st.first_open_date order by count(tr.pos_transfer_id) limit(20);").mappings().all()
 
-
-    # def updateAssignment(self, value):
-    #     return self.executeRawSql("""UPDATE assignment SET email=:email WHERE isbn=:isbn;""", value)
-    
-    # def addAssignment(self, value):
-    #     return self.executeRawSql("""INSERT INTO assignment(email, isbn) VALUES(:email, :isbn);""", value)
-
-    # def deleteAssignment(self, value):
-    #     return self.executeRawSql("DELETE FROM assignment where email=:email and isbn=:isbn;", value)
-
-    # def getAssignment(self, value):
-    #     values = self.executeRawSql("""SELECT * FROM assignment WHERE email=:email and isbn=:isbn;""", value).mappings().all()
-    #     if len(values) == 0:
-    #         raise Exception("Book {} has not been assignment by {}".format(value["isbn"], value["email"]))
-    #     return values[0]
-
-    # def getAllBooks(self):
-    #     return self.executeRawSql("SELECT * FROM book;").mappings().all()
-
-    # def getAllUsers(self):
-    #     return self.executeRawSql("SELECT * FROM student;").mappings().all()
-
-    # def getBooksAndAssignments(self):
-    #     return self.executeRawSql("SELECT book.isbn, email, title, author FROM book LEFT JOIN assignment ON book.isbn = assignment.isbn;").mappings().all()
-
     def getManagerByEmail(self, email):
         values = self.executeRawSql("""SELECT * FROM manager WHERE email=:email;""", {"email": email}).mappings().all()
         if len(values) == 0:
@@ -220,8 +195,3 @@ class Models:
                 store_key VARCHAR(50) references stores(store_key)
                 );
             """)
-# data = ( { "id": 1, "title": "The Hobbit", "primary_author": "Tolkien" },
-    #              { "id": 2, "title": "The Silmarillion", "primary_author": "Tolkien" },
-    #     )
-
-    # statement = text("""INSERT INTO book(id, title, primary_author) VALUES(:id, :title, :primary_author)""")

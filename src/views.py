@@ -2,7 +2,6 @@ from flask import request, session, redirect, url_for, render_template, flash
 
 from . models import Models
 from . forms import BestBooksForm, BestClerksForm, BookTypesForm, SalesForm, MostFreqShopperForm, AddBookForm, AddClerkForm, AddDateForm, AddFreqShopperForm, AddPromotionForm, AddStoreForm, AddTransferForm, SignUpForm, SignInForm 
-# AddReaderForm, 
 
 from src import app
 
