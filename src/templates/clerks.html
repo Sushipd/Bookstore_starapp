@@ -54,6 +54,7 @@
     <li role="presentation" class="active"><a href="">Clerks</a></li>
     <li role="presentation"><a href="/shoppers">Shoppers</a></li>
     <li role="presentation"><a href="/stores">Stores</a></li>
+    <li role="presentation"><a href="/promotionFeatures">Promotions</a></li>
 </ul>
 </div>
 <div>
@@ -63,7 +64,6 @@
     <li role="presentation"><a href="/bookTypes">Favorite book types</a></li>
     <li role="presentation"><a href="/sales">Sales for Store</a></li>
     <li role="presentation"><a href="/mostFreqShopper">Most Frequent Shoppers For Store</a></li>
-    <li role="presentation"><a href="/promotionFeatures">Promotions</a></li>
 </ul>
 </div>
 <div>
@@ -76,6 +76,7 @@
         <li role="presentation"><a href="/about_user">About</a></li>
     </ul>
 </div>
+<h3 align="center">This page shows 20 clerks who handled the least number of transfers (but at least one transfer, no data for brand new clerks)</h3>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
