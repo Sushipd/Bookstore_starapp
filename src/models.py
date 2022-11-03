@@ -84,6 +84,19 @@ class Models:
             raise Exception("We do not have {}".format(value["store_key"]))
         return values
 
+    def getBooks(self):
+        return self.executeRawSql("SELECT bk.book_key, bk.printshop, bk.writer, bk.publication_date, bk.type, bk.book_name, bk.price, count(tr.pos_transfer_id) from book bk, transfer tr where bk.book_key=tr.book_key group by bk.book_key, bk.printshop, bk.writer, bk.publication_date, bk.type, bk.book_name, bk.price order by count(tr.pos_transfer_id) limit(20);").mappings().all()
+
+    def getClerks(self):
+        return self.executeRawSql("select cl.clerk_id, cl.first_name, cl.last_name, cl.gender, cl.email, cl.date_of_hire, count(tr.pos_transfer_id) from clerk cl, transfer tr where cl.clerk_id=tr.clerk_id group by cl.clerk_id, cl.first_name, cl.last_name, cl.gender, cl.email, cl.date_of_hire order by count(tr.pos_transfer_id) limit(20);").mappings().all()
+
+    def getShoppers(self):
+        return self.executeRawSql("select sh.shopper_id, sh.title, sh.first_name, sh.last_name, sh.date_of_birth, sh.city, sh.street_address, sh.phone, count(tr.pos_transfer_id) from freq_shopper sh, transfer tr where sh.shopper_id=tr.shopper_id group by sh.shopper_id, sh.title, sh.first_name, sh.last_name, sh.date_of_birth, sh.city, sh.street_address, sh.phone order by count(tr.pos_transfer_id) limit(20);").mappings().all()
+
+    def getStores(self):
+        return self.executeRawSql("select st.store_key, st.store_name, st.store_street_address, st.store_city, st.store_country, st.store_manager, st.selling_square_footage, st.first_open_date, count(tr.pos_transfer_id) from stores st, transfer tr where st.store_key = tr.store_key group by st.store_key, st.store_name, st.store_street_address, st.store_city, st.store_country, st.store_manager, st.selling_square_footage, st.first_open_date order by count(tr.pos_transfer_id) limit(20);").mappings().all()
+
+
     # def updateAssignment(self, value):
     #     return self.executeRawSql("""UPDATE assignment SET email=:email WHERE isbn=:isbn;""", value)
     
@@ -113,12 +126,6 @@ class Models:
         if len(values) == 0:
             raise Exception("Manager {} does not exist".format(email))
         return values[0]
-
-    # def getStudentByEmail(self, email):
-    #     values = self.executeRawSql("""SELECT * FROM student WHERE email=:email;""", {"email": email}).mappings().all()
-    #     if len(values) == 0:
-    #         raise Exception("Student {} does not exist".format(email))
-    #     return values[0]
 
     def createModels(self):
         self.executeRawSql(

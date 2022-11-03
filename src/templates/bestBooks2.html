@@ -50,6 +50,14 @@
 <div>
     <ul class="nav nav-tabs">
       <li role="presentation"><a href="/transfers">Transfers</a></li>
+      <li role="presentation"><a href="/books">Books</a></li>
+      <li role="presentation"><a href="/clerks">Clerks</a></li>
+      <li role="presentation"><a href="/shoppers">Shoppers</a></li>
+      <li role="presentation"><a href="/stores">Stores</a></li>
+    </ul>
+</div>
+<div>
+    <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="">Best Books</a></li>
       <li role="presentation"><a href="/bestClerks">Best Clerks</a></li>
       <li role="presentation"><a href="/bookTypes">Favorite book types</a></li>
@@ -83,7 +91,6 @@
     <div><h3 class="panel-title">{{i.book_key}}: {{i.book_name}} ----- Count: {{i.count}}</h3></div>
   </div>
   <div class="panel-body">
-    <p>Book name: {{i.book_name}}</p>
     <p>Book type: {{i.type}}</p>
     <p>Printshop: {{i.printshop}}</p>
     <p>Writer: {{i.writer}}</p>

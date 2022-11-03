@@ -37,6 +37,54 @@ def transfers():
         flash(str(e))
 
 
+@app.route('/books')
+def books():
+    try:
+        if session['user_available']:
+            books = models.getBooks()
+            return render_template('books.html', books=books)
+        flash('User is not Authenticated')
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
+
+
+@app.route('/clerks')
+def clerks():
+    try:
+        if session['user_available']:
+            clerks = models.getClerks()
+            return render_template('clerks.html', clerks=clerks)
+        flash('User is not Authenticated')
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
+
+
+@app.route('/shoppers')
+def shoppers():
+    try:
+        if session['user_available']:
+            shoppers = models.getShoppers()
+            return render_template('shoppers.html', shoppers=shoppers)
+        flash('User is not Authenticated')
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
+
+
+@app.route('/stores')
+def stores():
+    try:
+        if session['user_available']:
+            stores = models.getStores()
+            return render_template('stores.html', stores=stores)
+        flash('User is not Authenticated')
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash(str(e))
+
+
 @app.route('/bestBooks', methods=['GET', 'POST'])
 def bestBooks():
     try:
@@ -119,7 +167,7 @@ def add_store():
             reader = AddStoreForm(request.form)
             if request.method == 'POST':
                 models.addStores({"store_key": reader.store_key.data, "store_name": reader.store_name.data, "store_street_address": reader.store_street_address.data, "store_city": reader.store_city.data, "store_country": reader.store_country.data, "store_manager": reader.store_manager.data, "selling_square_footage": reader.selling_square_footage.data,"first_open_date": reader.first_open_date.data})
-                #return redirect(url_for('show_books'))
+                return redirect(url_for('stores'))
             return render_template('addStores.html', reader=reader)
     except Exception as e:
         flash(str(e))
@@ -134,7 +182,7 @@ def add_book():
             reader = AddBookForm(request.form)
             if request.method == 'POST':
                 models.addBook({"book_key": reader.book_key.data, "Printshop": reader.Printshop.data,"Writer":reader.Writer.data,"Publication_date":reader.Publication_date.data,"Type":reader.Type.data,"Book_name":reader.Book_name.data, "Price":reader.Price.data})
-                #return redirect(url_for('show_books'))
+                return redirect(url_for('books'))
             return render_template('addBook.html', reader=reader)
     except Exception as e:
         flash(str(e))
@@ -149,7 +197,7 @@ def add_clerk():
             reader = AddClerkForm(request.form)
             if request.method == 'POST':
                 models.addClerk({"clerk_id": reader.clerk_id.data, "first_name": reader.first_name.data,"last_name":reader.last_name.data,"gender":reader.gender.data,"email":reader.email.data,"date_of_hire":reader.date_of_hire.data})
-                #return redirect(url_for('show_clerks'))
+                return redirect(url_for('clerks'))
             return render_template('addClerk.html', reader=reader)
     except Exception as e:
         flash(str(e))
@@ -164,7 +212,7 @@ def add_freqshopper():
             reader = AddFreqShopperForm(request.form)
             if request.method == 'POST':
                 models.addFreqShopper({"shopper_id": reader.shopper_id.data, "title": reader.title.data, "first_name": reader.first_name.data, "last_name": reader.last_name.data, "gender": reader.gender.data, "date_of_birth": reader.date_of_birth.data, "city": reader.city.data, "street_address": reader.street_address.data, "phone": reader.phone.data})
-                #return redirect(url_for('show_books'))
+                return redirect(url_for('shoppers'))
             return render_template('addFreqshopper.html', reader=reader)
     except Exception as e:
         flash(str(e))
@@ -234,7 +282,6 @@ def signin():
             if log.password == signinform.password.data:
                 session['current_user'] = em
                 session['user_available'] = True
-                # return redirect(url_for('show_books'))
                 return redirect(url_for('transfers'))
             else:
                 flash('Cannot sign in')

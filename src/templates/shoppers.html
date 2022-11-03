@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Transfers</title>
+    <title>Shoppers</title>
 
     <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
@@ -49,10 +49,10 @@
 </div>
 <div>
 <ul class="nav nav-tabs">
-    <li role="presentation" class="active"><a href="">Transfers</a></li>
+    <li role="presentation"><a href="/transfers">Transfers</a></li>
     <li role="presentation"><a href="/books">Books</a></li>
     <li role="presentation"><a href="/clerks">Clerks</a></li>
-    <li role="presentation"><a href="/shoppers">Shoppers</a></li>
+    <li role="presentation" class="active"><a href="">Shoppers</a></li>
     <li role="presentation"><a href="/stores">Stores</a></li>
 </ul>
 </div>
@@ -84,19 +84,16 @@
   {% endif %}
 {% endwith %}
 <div class="ps">
-{% for i in transfers %}
+{% for i in shoppers %}
 <div class="panel panel-info">
   <div class="panel-heading">
-    <div><h3 class="panel-title">Transfer ID: {{i.pos_transfer_id}} ----- Clerk: {{i.clerk_id}} / Shopper: {{i.shopper_id}} ----- {{i.date_time}}</h3></div>
-    {% if i.email != None %}
-    <div id="icon">   
-      <a class="glyphicon glyphicon-pencil" href="/updateTransfers/{{i.date_key}}/{{i.book_key}}/{{i.clerk_id}}/{{i.shopper_id}}/{{i.promotion_key}}/{{i.store_key}}/{{i.pos_transfer_id}}"></a>&nbsp &nbsp
-      <a class="glyphicon glyphicon-trash" id="del" href="/delete/{{i.pos_transfer_id}}"></a>
-    </div>
-    {% endif %}
+    <div><h3 class="panel-title">{{i.shopper_id}}: {{i.title}}. {{i.first_name}} {{i.last_name}} ----- Total number of transfers: {{i.count}}</h3></div>
   </div>
   <div class="panel-body">
-    <p>Store: {{i.store_name}} ----- Book: {{i.book_name}} ----- Promotion: {{i.promotion_name}}</p>
+    <p>Date of Birth: {{i.date_of_birth}}</p>
+    <p>City: {{i.city}}</p>
+    <p>Street Address: {{i.street_address}}</p>
+    <p>Phone: {{i.phone}}</p>
   </div>
 </div>
 {% endfor %}

@@ -7,10 +7,6 @@ def length_check(form,field):
         raise ValidationError('Fields should not be null')
     
 
-# class AddReaderForm(Form):
-#     email = StringField('Email', validators=[ DataRequired()])
-#     isbn = StringField('ISBN', validators = [DataRequired()])
-
 class BestBooksForm(Form):
     calendar_month = StringField('Calendar month', validators = [DataRequired()])
     calender_year = StringField('Calendar year', validators=[ DataRequired()])
